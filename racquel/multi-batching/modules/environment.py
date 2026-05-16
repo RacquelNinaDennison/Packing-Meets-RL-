@@ -1,13 +1,6 @@
 """
-MDP environment for Stage 1 of the Multi-Batching Problem.
+MDP environment for network load assignment. 
 
-Key design decisions:
-  - Parts routed sequentially (p1 then p2)
-  - Action: (from, to, tr, quantity) for the current part
-  - qty=0 signals "done routing this part"
-  - Step reward: negative delta dispatch cost on the affected arc
-  - Terminal reward: large positive for feasibility + cost bonus,
-    large negative for violations / unmet demand
 """
 
 import math
