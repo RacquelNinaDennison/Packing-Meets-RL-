@@ -43,7 +43,6 @@ def unmet_demand(load: Dict) -> float:
     return total
 
 
-# ── Environment ───────────────────────────────────────────────────────
 
 class MultiBatchingEnv:
     BASELINE_COST = 45.0
@@ -59,8 +58,6 @@ class MultiBatchingEnv:
         self.mu                = mu
         self.feasibility_bonus = feasibility_bonus
         self.max_steps_per_part = max_steps_per_part
-
-        # Actions: (from, to, tr, qty) for qty in 0..MAX_QUANTITY
         self.actions: List[Tuple] = []
         for (frm, to, tr) in sorted(ROUTES.keys()):
             for qty in range(0, MAX_QUANTITY + 1):
