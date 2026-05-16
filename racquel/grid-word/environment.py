@@ -35,12 +35,10 @@ class Environment:
         elif(action == "right"):
             new_position = (self.agent_position[0], self.agent_position[1] + 1)
         if(new_position[0] < 0 or new_position[0] >= len(self.grid) or new_position[1] < 0 or new_position[1] >= len(self.grid[0])):
-            return self.agent_position, self.get_reward(), False
+            return self.agent_position, self.reward_config.get("boundary_reward", -5), False
         if new_position in self.obstacle_positions:
-            return self.agent_position, self.get_reward(), False
-        else:
-            self.agent_position = new_position
-            if(self.is_terminal()):
-                return self.agent_position, self.get_reward(), True
-            else:
-                return self.agent_position, self.get_reward(), False
+            return self.agent_position, self.reward_config.get("obstacle_reward", -10), False
+        self.agent_position = new_position
+        if(self.is_terminal()):
+            return self.agent_position, self.reward_config.get("terminal_reward", 100), True
+        return self.agent_position, self.reward_config.get("step_reward", -0.01), False
