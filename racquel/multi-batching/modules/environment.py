@@ -12,7 +12,7 @@ Key design decisions:
 
 import math
 from typing import Dict, List, Tuple
-from instances import (
+from .instances import (
     LOCATIONS, PARTS, TRANSPORT, PART_SIZE,
     DEMAND_OFFER, ROUTES, MAX_QUANTITY,
 )
@@ -49,12 +49,7 @@ def unmet_demand(load: Dict) -> float:
                 total += max(0, abs(net) - inflow)
     return total
 
-
-# ── Environment ───────────────────────────────────────────────────────
-
 class MultiBatchingEnv:
-    BASELINE_COST = 45.0
-
     def __init__(
         self,
         lam: float = 10000.0,  
@@ -66,8 +61,6 @@ class MultiBatchingEnv:
         self.mu                = mu
         self.feasibility_bonus = feasibility_bonus
         self.max_steps_per_part = max_steps_per_part
-
-        # Actions: (from, to, tr, qty) for qty in 0..MAX_QUANTITY
         self.actions: List[Tuple] = []
         for (frm, to, tr) in sorted(ROUTES.keys()):
             for qty in range(0, MAX_QUANTITY + 1):
@@ -84,12 +77,6 @@ class MultiBatchingEnv:
         return self._state_key()
 
     def _state_key(self) -> Tuple:
-        """
-        Simplified state: only encode loads for the CURRENT part.
-        Since parts are routed sequentially, previous part loads are
-        fixed and do not affect current decisions. This keeps the
-        state space tractable (~462 reachable states per part).
-        """
         if self.part_idx >= len(PARTS):
             return (self.part_idx, ())
         part = PARTS[self.part_idx]

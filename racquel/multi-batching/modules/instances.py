@@ -27,7 +27,6 @@ ROUTES = {
     ("l2", "l3", "tr1"): {"dist": 2, "cost": 6},
     ("l2", "l3", "tr2"): {"dist": 2, "cost": 10},
 }
- 
-# this can be derived imperically
+
 MAX_QUANTITY = 10
  
